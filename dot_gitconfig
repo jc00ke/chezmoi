@@ -1,0 +1,72 @@
+[include]
+  path = ~/.gitconfig-rp.inc
+[includeIf "hasconfig:remote.*.url:*:RatioPBC/**"]
+  path = ~/.gitconfig-ratio.inc
+[includeIf "hasconfig:remote.*.url:*:OpenResearchLab/**"]
+  path = ~/.gitconfig-ratio.inc
+[format]
+  pretty="format:%C(yellow)%h%Creset %C(magenta bold)%aN%Creset%C(blue) %ad%Creset %s"
+[push]
+  default = current
+[branch]
+  autosetuprebase = always
+[alias]
+  a = add
+  amend = commit --amend -C HEAD # amend to the last commit
+  authors = shortlog -s -n --all --no-merges
+  b = branch
+  c = commit
+  cl = clone
+  co = checkout
+  cp = cherry-pick
+  d = diff
+  fp = force-push
+  force-push = "push --force-with-lease"
+  m = merge
+  p = push --follow-tags
+  pr = pull-request # shorten up pull-request
+  pu = pull
+  r = reset
+  rewrite-last = rebase -i HEAD^ # rewrite last commit msg
+  rw = rewrite-last
+  ri = rebase --interactive --autosquash # interactive rebase
+  s = status
+  serve = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
+  staged = diff --cached # diff the index against the previous commit
+  update-remotes = remote update --prune # update all remotes, pruning removed tracking branches
+[core]
+  excludesfile = ~/.gitignore
+  autocrlf = input
+[color]
+  ui = true
+[color "branch"]
+  current = cyan reverse
+  local = yellow
+  remote = green
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[commit]
+  gpgsign = true
+[init]
+  defaultBranch = main
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  program = /opt/1Password/op-ssh-sign
+  allowedSignersFile = ~/.ssh/allowed_signers
+[diff]
+  external = difft
+[merge]
+  conflictstyle = diff3
+[diff]
+  tool = difftastic
+[difftool]
+  prompt = false
+[difftool "difftastic"]
+  cmd = difft "$LOCAL" "$REMOTE"
+[pager]
+  difftool = true
+[pull]
+	rebase = true
