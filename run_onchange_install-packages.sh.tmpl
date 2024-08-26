@@ -1,0 +1,42 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+sudo apt install -y \
+  autoconf \
+  autopoint \
+  bison \
+  build-essential \
+  cmake \
+  curl \
+  fish \
+  fonts-nerd-font-jetbrainsmono \
+  fonts-noto-color-emoji \
+  git \
+  git-doc \
+  gitg \
+  htop \
+  imagemagick \
+  inotify-tools \
+  jq \
+  libbz2-dev \
+  libclang-dev libffi-dev \
+  libfontconfig1-dev \
+  libfreetype6-dev \
+  libgdbm-dev \
+  libgtk-3-dev \
+  libncurses5-dev \
+  libreadline-dev \
+  libsensors-dev \
+  libssl-dev \
+  libtool \
+  libxcb-xfixes0-dev \
+  libxml2-dev \
+  libxslt1-dev \
+  libyaml-dev \
+  lm-sensors \
+  pkg-config \
+  ripgrep \
+  zlib1g-dev
+{{ else if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+brew install ripgrep
+{{ end -}}
