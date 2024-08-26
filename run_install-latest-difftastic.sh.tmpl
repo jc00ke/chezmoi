@@ -1,0 +1,19 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+if command -v difft >/dev/null; then
+  local_version="$(difft -V | cut -d' ' -f2)"
+  latest_version="{{ (gitHubLatestRelease "Wilfred/difftastic").TagName }}"
+  if [ "$local_version" = "$latest_version" ]; then
+    echo "difftastic: Latest version $latest_version already installed."
+    exit
+  fi
+fi
+
+wget -L -q -O difftastic.tar.gz {{ gitHubLatestReleaseAssetURL "Wilfred/difftastic" (printf "difft-x86_64-unknown-%s-gnu.tar.gz" .chezmoi.os) }}
+
+tar xf difftastic.tar.gz
+sudo mv difft /usr/local/bin/ && rm difftastic.tar.gz
+{{ else if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+brew install difftastic
+{{ end -}}
