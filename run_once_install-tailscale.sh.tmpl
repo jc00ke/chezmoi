@@ -1,0 +1,8 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+curl -fsSL https://tailscale.com/install.sh | sh
+{{ else if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+open "https://apps.apple.com/ca/app/tailscale/id1475387142"
+{{ end -}}
