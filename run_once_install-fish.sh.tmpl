@@ -1,0 +1,9 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+sudo apt install -y fish
+echo "Setting fish as default shell"
+chsh -s /usr/bin/fish
+{{ else if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+echo "Install fish"
+{{ end -}}
