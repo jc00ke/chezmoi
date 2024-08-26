@@ -1,9 +1,24 @@
 #!/bin/sh
+atuin_path="$HOME/.atuin/bin"
+atuin_command="$atuin_path/atuin"
+
+if [ -x "$atuin_command" ]; then
+  local_version="v$(atuin --version | cut -d' ' -f2)"
+  latest_version="{{ (gitHubLatestRelease "atuinsh/atuin").TagName }}"
+  if [ "$local_version" = "$latest_version" ]; then
+    echo "atuin: Latest version $latest_version already installed."
+    exit 0
+  fi
+fi
+
+echo "Installing atuin"
 curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
-
-. $HOME/.atuin/bin/env
-
-echo "{{ onepasswordRead "op://Private/Atuin/password" }}" | xargs $HOME/.atuin/bin/atuin login \
-  -u "{{ onepasswordRead "op://Private/Atuin/username" }}" \
-  -k "{{ onepasswordRead "op://Private/Atuin/encryption key" }}" \
-  -p
+  
+. "$atuin_path/env"
+  
+if [ atuin status | grep -v jc00ke ]; then
+  echo "$(op read "op://Private/Atuin/password")" | xargs "$atuin_command" login \
+    -u "$(op read "op://Private/Atuin/username")" \
+    -k "$(op read "op://Private/Atuin/encryption key")" \
+    -p
+fi
