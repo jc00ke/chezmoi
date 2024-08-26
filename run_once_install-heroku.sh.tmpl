@@ -1,0 +1,9 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+sudo apt-key export 6B935C6E | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/heroku.gpg
+{{ else if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+echo "Install Heroku CLI"
+{{ end -}}
