@@ -13,6 +13,7 @@ set -x KERL_BUILD_DOCS "yes"
 set -x XDG_SESSION_TYPE "wayland"
 set -x MOZ_ENABLE_WAYLAND "1"
 
+fish_add_path -P "/opt/nvim-linux64/bin"
 fish_add_path "$HOME/src/bin"
 fish_add_path "$HOME/.local/bin"
 fish_add_path "$HOME/.config/yarn/global/node_modules/.bin"
