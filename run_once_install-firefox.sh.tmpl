@@ -1,0 +1,30 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+if snap list | grep firefox >/dev/null 2>&1; then
+  sudo snap remove firefox
+fi
+
+sudo install -d -m 0755 /etc/apt/keyrings
+wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null
+expected_fingerprint="35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3"
+actual_fingerprint="$(gpg -n -q --import --import-options import-show /etc/apt/keyrings/packages.mozilla.org.asc | awk '/pub/{getline; gsub(/^ +| +$/,""); print $0}')"
+if [ "$actual_fingerprint" != "$expected_fingerprint" ]; then
+  echo "Firefox fingerprint doesn't match!"
+  echo "Actual:   $actual_fingerprint"
+  echo "Expected: $expected_fingerprint"
+  exit 1
+fi
+echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list > /dev/null
+echo '
+Package: *
+Pin: origin packages.mozilla.org
+Pin-Priority: 1000
+' | sudo tee /etc/apt/preferences.d/mozilla
+
+sudo apt update
+sudo apt install -y --allow-downgrades firefox
+{{ else if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+echo "Install Firefox"
+{{ end -}}
