@@ -1,0 +1,7 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+{{ else if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+brew install zoxide
+{{ end -}}
