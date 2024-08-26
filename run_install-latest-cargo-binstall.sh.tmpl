@@ -1,0 +1,20 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+if command -v cargo-binstall >/dev/null; then
+  local_version="v$(cargo-binstall -V)"
+  latest_version="{{ (gitHubLatestRelease "cargo-bins/cargo-binstall").TagName }}"
+  if [ "$local_version" = "$latest_version" ]; then
+    echo "cargo-binstall: Latest version $latest_version already installed."
+    exit
+  fi
+fi
+
+wget -L -q -O cargo-binstall.tar.gz {{ gitHubLatestReleaseAssetURL "cargo-bins/cargo-binstall" (printf "cargo-binstall-x86_64-unknown-%s-musl.tgz" .chezmoi.os) }}
+
+tar xf cargo-binstall.tar.gz
+sudo mv cargo-binstall /usr/local/bin/ && rm cargo-binstall.tar.gz
+{{ else if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+echo "Install cargo-binstall"
+{{ end -}}
