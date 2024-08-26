@@ -1,0 +1,9 @@
+#!/bin/sh
+curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+
+. $HOME/.atuin/bin/env
+
+echo "{{ onepasswordRead "op://Private/Atuin/password" }}" | xargs $HOME/.atuin/bin/atuin login \
+  -u "{{ onepasswordRead "op://Private/Atuin/username" }}" \
+  -k "{{ onepasswordRead "op://Private/Atuin/encryption key" }}" \
+  -p
